@@ -1,18 +1,24 @@
 class Solution:
     def isValid(self, s: str) -> bool:
-        starts={'(':')', '{':'}', '[':']'}
-        start=deque()
+        opens={'(': ')', '{': '}', '[':']'}
+        openingb=deque()
 
-        for paran in s:
-            if paran in starts:
-                start.append(paran)
+        if len(s)<2:
+            return False
+
+        for b in s:
+            if b in opens:
+                openingb.append(b)
             else:
-                if start and starts[start.pop()]==paran:
-                    continue
-                else:
+                if not openingb:
                     return False
+                openbracket=openingb.pop()
+                if b!=opens[openbracket]:
+                    return False
+
         
-        if not start:
-            return True
-        return False
+        if openingb:
+            return False
+        return True
+
         
