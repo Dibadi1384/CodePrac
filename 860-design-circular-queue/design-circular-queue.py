@@ -1,74 +1,75 @@
-class ListNode():
-    def __init__(self, value):
-        self.next=None
-        self.prev=None
-        self.value=value
+class ListNode:
+    def __init__(self, val=0, prev=None, next=None):
+        self.val = val
+        self.prev = prev
+        self.next = next
 
 class MyCircularQueue:
 
     def __init__(self, k: int):
-        self.size=k
-        self.cap=0
-        self.head=ListNode(0)
-        self.tail=ListNode(0)
+        self.head=ListNode(0,None,None)
+     
+        self.tail=ListNode(0,None,None)
         self.head.next=self.tail
+        self.head.prev=None
+        self.tail.next=None
         self.tail.prev=self.head
-        
+
+        self.size=0
+        self.cap=k
 
     def enQueue(self, value: int) -> bool:
-        #you want to add a node to the tail(before the tail)
-        if self.isFull():
+        if (self.cap==self.size):
             return False
-
-        node=ListNode(value)
-        prevnode=self.tail.prev
-        prevnode.next=node
-        node.prev=prevnode
-        node.next=self.tail
-        self.tail.prev=node
-        self.cap+=1
-        return True
         
+        else:
+            self.size+=1
+            newnode=ListNode(value,None,None)
+
+            self.tail.prev.next=newnode
+            newnode.prev=self.tail.prev
+            newnode.next=self.tail
+            self.tail.prev=newnode
+            
+        return True
+
+
         
 
     def deQueue(self) -> bool:
-        if self.isEmpty():
+        if self.size==0:
             return False
-
-        #you want to remove the node before head
-        firstnode=self.head.next
-        firstnode.next.prev=self.head
-        self.head.next=firstnode.next
-
-        self.cap-=1
+        self.size-=1
+        
+  
+        self.head.next=self.head.next.next
+        self.head.next.prev=self.head
+        
         return True
+
 
     def Front(self) -> int:
         if self.isEmpty():
             return -1
-        return self.head.next.value
-        #the node before tail
+        return self.head.next.val
         
 
     def Rear(self) -> int:
         if self.isEmpty():
             return -1
-        return self.tail.prev.value
-        #the node after head
-        
+        return self.tail.prev.val
+
 
     def isEmpty(self) -> bool:
-        #if cap is 0
-        if self.cap==0:
+        if self.size==0:
             return True
         return False
+        
 
     def isFull(self) -> bool:
-        #is cap is equal to size
-        if self.cap==self.size:
+        if self.size==self.cap:
             return True
         return False
-
         
 
 
