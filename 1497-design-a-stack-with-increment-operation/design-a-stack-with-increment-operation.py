@@ -9,7 +9,6 @@ class CustomStack:
         
         if len(self.stack)<self.maxsize:
             self.stack.append(x)
-        print(self.stack)
         
         
 
