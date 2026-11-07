@@ -1,24 +1,25 @@
-from sortedcontainers import SortedDict
+from sortedcontainers import sorteddict
+from bisect import bisect_left, bisect_right
 
 class TimeMap:
     def __init__(self):
-        self.timemap = {}
+        self.keys={}
+        
 
     def set(self, key: str, value: str, timestamp: int) -> None:
-        if key not in self.timemap:
-            self.timemap[key]=SortedDict()
-        #Inserting into SortedDict is o(logn)
-        self.timemap[key][timestamp]=value
+        if key not in self.keys:
+            self.keys[key]=SortedDict()
 
-    def get(self, key: str, timestamp: int) -> str:
-        #bisect is binary search is its O(logn) cuz we cut the search space in half each time
-        if key not in self.timemap or self.timemap[key].bisect_right(timestamp)==0:
-            return ""
-
-        return (self.timemap[key].peekitem( self.timemap[key].bisect_right(timestamp)-1)[1])
-
+        self.keys[key][timestamp]= value
         
-            
+    def get(self, key: str, timestamp: int) -> str:
+        if key not in self.keys:
+            return ""
+        index=self.keys[key].bisect_right(timestamp)-1
+        if index<0:
+            return ""
+        return self.keys[key].peekitem(index)[1]
+
         
 
 
