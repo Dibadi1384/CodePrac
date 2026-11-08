@@ -21,7 +21,6 @@ class SnapshotArray:
     def get(self, index: int, snap_id: int) -> int:
         indexhistory=self.snapshots[index]
         i=bisect.bisect_left(indexhistory, (snap_id,))-1
-        i=min(i, len(indexhistory)-1)
         return indexhistory[i][1]
 
 
